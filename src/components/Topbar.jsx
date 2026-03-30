@@ -14,7 +14,7 @@ function Topbar({ title }) {
     <header className="topbar">
       <div>
         <h2>{title}</h2>
-        <p>Painel profissional da MTSS</p>
+        <p>Dashboard profissional da MTSS</p>
       </div>
 
       <div className="topbar-actions">

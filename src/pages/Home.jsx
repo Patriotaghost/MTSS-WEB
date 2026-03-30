@@ -1,4 +1,14 @@
 import { useMemo } from 'react'
+import {
+  Wallet,
+  TrendingUp,
+  Users,
+  ShoppingCart,
+  Package,
+  Truck,
+  ClipboardList,
+  BarChart3,
+} from 'lucide-react'
 import Layout from '../components/Layout'
 import { getClientes } from '../services/clientes'
 import { getProdutos } from '../services/produtos'
@@ -12,21 +22,20 @@ function Home() {
   const compras = getCompras()
 
   const resumo = useMemo(() => {
-    const totalVendas = pedidos.reduce((acc, pedido) => acc + Number(pedido.valorTotal), 0)
+    const totalVendas = pedidos.reduce((acc, pedido) => acc + Number(pedido.valorTotal || 0), 0)
 
     const totalLucro = pedidos
       .filter((pedido) => pedido.status === 'pago')
-      .reduce((acc, pedido) => acc + Number(pedido.lucro), 0)
+      .reduce((acc, pedido) => acc + Number(pedido.lucro || 0), 0)
 
     const pedidosAbertos = pedidos.filter((pedido) => pedido.status !== 'pago').length
 
     const totalComprado = compras.reduce(
-      (acc, compra) => acc + Number(compra.valorTotal),
+      (acc, compra) => acc + Number(compra.valorTotal || 0),
       0,
     )
 
     const ultimoFornecedor = compras.length > 0 ? compras[0].fornecedor : 'Nenhum'
-
     const ultimasCompras = compras.slice(0, 5)
 
     return {
@@ -47,7 +56,7 @@ function Home() {
       <section className="hero-panel">
         <div>
           <span className="badge-status">Sistema em funcionamento</span>
-          <h1>Controle profissional da MTSS</h1>
+          <h1>Dashboard</h1>
           <p>
             Visualize clientes, produtos, pedidos, compras, lucro e saldo devedor
             em um painel moderno, limpo e funcional.
@@ -57,25 +66,45 @@ function Home() {
 
       <section className="stats-grid">
         <div className="stat-card">
-          <span>Vendas totais</span>
+          <div className="stat-card-top">
+            <div className="stat-icon">
+              <Wallet size={20} />
+            </div>
+            <span>Vendas totais</span>
+          </div>
           <strong>R$ {resumo.totalVendas.toFixed(2)}</strong>
           <small>Baseado em todos os pedidos</small>
         </div>
 
         <div className="stat-card">
-          <span>Lucro realizado</span>
+          <div className="stat-card-top">
+            <div className="stat-icon">
+              <TrendingUp size={20} />
+            </div>
+            <span>Lucro realizado</span>
+          </div>
           <strong>R$ {resumo.totalLucro.toFixed(2)}</strong>
           <small>Somente pedidos pagos</small>
         </div>
 
         <div className="stat-card">
-          <span>Clientes cadastrados</span>
+          <div className="stat-card-top">
+            <div className="stat-icon">
+              <Users size={20} />
+            </div>
+            <span>Clientes cadastrados</span>
+          </div>
           <strong>{resumo.totalClientes}</strong>
           <small>Total atual</small>
         </div>
 
         <div className="stat-card">
-          <span>Pedidos em aberto</span>
+          <div className="stat-card-top">
+            <div className="stat-icon">
+              <ShoppingCart size={20} />
+            </div>
+            <span>Pedidos em aberto</span>
+          </div>
           <strong>{resumo.pedidosAbertos}</strong>
           <small>Pendentes ou atrasados</small>
         </div>
@@ -83,25 +112,45 @@ function Home() {
 
       <section className="stats-grid">
         <div className="stat-card">
-          <span>Total comprado</span>
+          <div className="stat-card-top">
+            <div className="stat-icon">
+              <BarChart3 size={20} />
+            </div>
+            <span>Total comprado</span>
+          </div>
           <strong>R$ {resumo.totalComprado.toFixed(2)}</strong>
           <small>Soma de todas as compras</small>
         </div>
 
         <div className="stat-card">
-          <span>Último fornecedor</span>
+          <div className="stat-card-top">
+            <div className="stat-icon">
+              <Truck size={20} />
+            </div>
+            <span>Último fornecedor</span>
+          </div>
           <strong>{resumo.ultimoFornecedor}</strong>
           <small>Último registro em compras</small>
         </div>
 
         <div className="stat-card">
-          <span>Produtos cadastrados</span>
+          <div className="stat-card-top">
+            <div className="stat-icon">
+              <Package size={20} />
+            </div>
+            <span>Produtos cadastrados</span>
+          </div>
           <strong>{resumo.totalProdutos}</strong>
           <small>Total atual no sistema</small>
         </div>
 
         <div className="stat-card">
-          <span>Total de pedidos</span>
+          <div className="stat-card-top">
+            <div className="stat-icon">
+              <ClipboardList size={20} />
+            </div>
+            <span>Total de pedidos</span>
+          </div>
           <strong>{resumo.totalPedidos}</strong>
           <small>Histórico geral</small>
         </div>
@@ -157,7 +206,7 @@ function Home() {
                       {compra.fornecedor} • {compra.data}
                     </p>
                   </div>
-                  <span>R$ {Number(compra.valorTotal).toFixed(2)}</span>
+                  <span>R$ {Number(compra.valorTotal || 0).toFixed(2)}</span>
                 </div>
               ))}
             </div>
